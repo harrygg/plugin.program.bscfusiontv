@@ -26,6 +26,5 @@
       <setting label="30501" id="restart_pvr"  type="action" action="XBMC.StartPVRManager"/>
       <setting label="30502" type="bool"   id="en_reload_pvr" default="true"/>
       <setting label="30503" type="bool"   id="ext_epg" default="true"/>
-      <setting label="30504" type="text"   id="map_dat" default="http://snip.li/epgmap" visible="eq(-1,true)"/>
     </category>
 </settings>

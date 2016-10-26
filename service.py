@@ -2,4 +2,4 @@
 
 import xbmc
 
-xbmc.executebuiltin('RunScript(plugin.program.bscfusion, False)')
+xbmc.executebuiltin('RunScript(plugin.program.bscfusiontv, False)')

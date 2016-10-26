@@ -28,7 +28,6 @@ class dodat():
                 gen_m3u = True,
                 gen_epg = False,
                 compress = True,
-                map_url = None,
                 proc_cb = None):
 
     self.__UA = {
@@ -70,7 +69,6 @@ class dodat():
     self.__gen_epg = gen_epg
     self.__compress = compress
     self.__cb = proc_cb
-    self.__MAP_URL = map_url
     self.__gen_jd = False
 
     self.__s = requests.Session()
@@ -272,17 +270,12 @@ class dodat():
                           generator_info_name="",
                           generator_info_url="")
       else:
-        if self.__MAP_URL:
-          try:
-            m = requests.get(self.__MAP_URL, timeout=self.__t, headers={'User-Agent': 'fusion_tv'})
-            self.__log_dat(m.request.headers)
-            self.__log_dat(m.headers)
-            self.__log_dat(m.status_code)
-            if m.status_code == requests.codes.ok:
-              map = m.json()
-              self.__log_dat(map)
-          except:
-            pass
+        try:
+          with open('map.json') as f:
+            map = json.load(f)
+            self.__log_dat(map)
+        except:
+          pass
 
       pl = u'#EXTM3U\n'
       if self.__gen_jd:

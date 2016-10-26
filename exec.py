@@ -43,7 +43,7 @@ def check_plg():
   if int(xbmc.getInfoLabel("System.BuildVersion" )[0:2]) > 14: ln = 1
   else: ln = 2
 
-  if len(re.findall(r'bscf', js_resp)) > ln:
+  if len(re.findall(r'bscfusiontv', js_resp)) > ln:
     Notify ('%s %s' % (__scriptname__, __version__) , '[COLOR FFFF0000]confilct ![/COLOR]')
     return False
   else:
@@ -57,7 +57,7 @@ def update(name, dat, crash=None):
   payload['ea'] = 'tv_service'
   payload['ev'] = '1'
   payload['dl'] = urllib.quote_plus(dat.encode('utf-8'))
-  ga().update(payload, crash)
+  ga('UA-79422131-11').update(payload, crash)
 
 __ua_os = {
   '0' : {'ua' : 'pcweb', 'osid' : 'pcweb'},
@@ -103,10 +103,8 @@ else:
 
 if __addon__.getSetting('ext_epg') == 'true':
   etx_epg = True
-  map_url = __addon__.getSetting('map_dat')
 else:
   etx_epg = False
-  map_url = None
 
 if not __addon__.getSetting('username'):
   Notify('User', 'empty')
@@ -137,7 +135,6 @@ try:
                 gen_m3u = True,
                 gen_epg = not etx_epg,
                 compress = True,
-                map_url = map_url,
                 proc_cb = progress_cb)
 
   if check_plg():
@@ -146,7 +143,7 @@ try:
       force = False
       dbg_msg('Reload timer')
       update('reload_timer',  __addon__.getSetting('check_interval'))
-      xbmc.executebuiltin('AlarmClock (%s, RunScript(plugin.program.bscfusion, False), %s, silent)' % (__scriptid__, __addon__.getSetting('check_interval')))
+      xbmc.executebuiltin('AlarmClock (%s, RunScript(%s, False), %s, silent)' % (__scriptid__,__scriptid__, __addon__.getSetting('check_interval')))
 
     if b.gen_all(force):
       if __addon__.getSetting('en_cp') == 'true' and __addon__.getSetting('w_path') != '' and xbmcvfs.exists(__r_path__):
@@ -174,11 +171,11 @@ try:
         dbg_msg('Reload PVR')
         update('reload_pvr', __ua_os[__addon__.getSetting('dev_id')]['osid'])
         xbmc.executebuiltin('XBMC.StopPVRManager')
-        xbmc.sleep(3000)
+        xbmc.sleep(1000)
         xbmc.executebuiltin('XBMC.StartPVRManager')
 
 except Exception, e:
-  Notify('Module Import', 'Fail')
+  Notify('Error!', str(e))
   traceback.print_exc()
   update('exception', str(e.args[0]), sys.exc_info())
   pass
